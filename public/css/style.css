@@ -1197,6 +1197,12 @@ p.m_2{
     position: relative;
     padding: 0px;
 }
+a.delete{
+    color:#ccc;
+    text-decoration: none;
+    font-size:20px;
+    font-weight: bold;
+}
 blockquote {
     border: none;
     position: relative;

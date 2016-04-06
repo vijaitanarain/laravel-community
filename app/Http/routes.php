@@ -109,6 +109,25 @@ Route::group(['middleware' => ['web']], function () {
     	'uses' => 'FeedbackController@postFeedback',
 	 	'as'=> 'submitfeedback'
 	]);
+	/* view quotes*/
+	Route :: get ('/user/postquotes/{author?}', [
+		 'uses' => 'UserController@getQuotes',
+		 'as' => 'postquotes',
+		 'middleware' => 'auth'
+		]);
+	
+	//post quotes
+    Route :: post('user/postQuote', [
+    	'uses' => 'UserController@postQuote',
+	 	'as'=> 'postQuote',
+	 	'middleware' => 'auth'
+	]);
+	//delete quotes
+    Route :: get('/delete/{quote_id}', [
+    	'uses' => 'UserController@deleteUserQuote',
+	 	'as'=> 'delete',
+	 	'middleware' => 'auth'
+	]);
 	// Route :: get('/createUser', [
 	// 	'uses' => 'UserController@postUser',
 	// 	'as'=> 'createUser' 
@@ -148,6 +167,7 @@ Route::group(['middleware' => ['web']], function () {
 	Route::get('/testimonials', function () {
 	    return view('testimonials');
 	});
+	
 
 	Route::get('/grids', function () {
 	    return view('grids');

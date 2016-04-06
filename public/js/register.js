@@ -1,24 +1,3 @@
-// function myFunction(){$("#registerButtonModal").click(function(){
-//     $('#registerFormModal').submit(function (e) {
-//       alert("hi");  e.preventDefault();
-//         var formData = new FormData($('#registerFormModal')[0]);
-
-//         $.ajax({
-//             url: url,
-//             type: 'POST',
-//             data: formData,
-//             success: function(msg){
-//                 alert(msg);
-//             }
-//             contentType: false,
-//             processData: false
-
-//         });
-//         });
-// });
-// }
-
-
 //Register
 $("form#registerFormModal").submit(function(e)
     { 
@@ -43,10 +22,17 @@ $("form#registerFormModal").submit(function(e)
                 password:$password,
                 _token:token},
             success:  function (response) {
-                errorsHtml = '<div class="alert alert-success"><ul>';
-                errorsHtml+= '<li>' + 'Your Account Created Successfully' + '</li>'; //showing only the first error.
-                errorsHtml += '</ul></div>';
-                 $('#result').html(errorsHtml);
+                        $errors = response; //this will get the errors response data.
+                        //show them somewhere in the markup
+                        //e.g
+                        errorsHtml = '<div class="alert alert-success"><ul>';
+
+                        $.each( $errors, function( key, value ) {
+                            errorsHtml += '<li>' + value + '</li>'; //showing only the first error.
+                        });
+                        errorsHtml += '</ul></div>';
+                        msg = errorsHtml;
+                       $('#result').html(msg); 
                  document.registerFormModal.reset();
                     //window.location = successurl;
                       },
@@ -72,14 +58,14 @@ $("form#registerFormModal").submit(function(e)
 
                     console.log(out);*/
                     $errors = x.responseJSON; //this will get the errors response data.
-        //show them somewhere in the markup
-        //e.g
-        errorsHtml = '<div class="alert alert-danger"><ul>';
+                  //show them somewhere in the markup
+                  //e.g
+                  errorsHtml = '<div class="alert alert-danger"><ul>';
 
-        $.each( $errors, function( key, value ) {
-            errorsHtml += '<li>' + value[0] + '</li>'; //showing only the first error.
-        });
-        errorsHtml += '</ul></div>';
+                  $.each( $errors, function( key, value ) {
+                      errorsHtml += '<li>' + value[0] + '</li>'; //showing only the first error.
+                  });
+                  errorsHtml += '</ul></div>';
                    $('#result').html(errorsHtml);
                    
                 }
@@ -112,8 +98,17 @@ $("#loginFormModal").submit(function(e)
                 datatype : 'JSON',
                  data : form.serialize(),
                 success:  function (response) {
-                   
-                         $('#result1').html(response);
+                        $errors = response; //this will get the errors response data.
+                        //show them somewhere in the markup
+                        //e.g
+                        errorsHtml = '<div class="alert alert-success"><ul>';
+
+                        $.each( $errors, function( key, value ) {
+                            errorsHtml += '<li>' + value + '</li>'; //showing only the first error.
+                        });
+                        errorsHtml += '</ul></div>';
+                        msg = errorsHtml;
+                       $('#result1').html(msg); 
                         window.location=successurl;
                 },
                 error: function (x,e) {
@@ -163,4 +158,78 @@ $("#loginFormModal").submit(function(e)
             });
         //alert("thank god111");
 });
+
+//subscribe
+$("#subscribefrm").submit(function(e)
+    { 
+        e.preventDefault(); //Prevent the normal submission action
+        var form=$("#subscribefrm");
+           $.ajax({
+
+                method: 'POST',
+                url:subscribeurl,
+                datatype : 'JSON',
+                 data : form.serialize(),
+                success:  function (response) {
+                  
+                         $errors = response; //this will get the errors response data.
+                        //show them somewhere in the markup
+                        //e.g
+                        errorsHtml = '<div class="alert alert-success"><ul>';
+
+                        $.each( $errors, function( key, value ) {
+                            errorsHtml += '<li>' + value + '</li>'; //showing only the first error.
+                        });
+                        errorsHtml += '</ul></div>';
+                        msg = errorsHtml;
+                       $('#result3').html(msg); 
+                },
+                error: function (x,e) {
+                        var msg = '';
+                    if (x.status==0) {
+                        msg = 'You are offline!!\n Please Check Your Network.';
+                    } else if(x.status==404) {
+                        msg = 'Requested URL not found.';
+                    } else if(x.status==500) {
+                       msg = 'Internel Server Error.';
+                    } else if(e=='parsererror') {
+                      msg = 'Error.\nParsing JSON Request failed.';
+                    } else if(e=='timeout'){
+                       msg ='Request Time out.';
+                    } else if(x.status == 406) {
+                    msg='wrong input, can\'t login';
+                    } else {
+                       $errors = x.responseJSON; //this will get the errors response data.
+        //show them somewhere in the markup
+        //e.g
+        errorsHtml = '<div class="alert alert-danger"><ul>';
+
+        $.each( $errors, function( key, value ) {
+            errorsHtml += '<li>' + value + '</li>'; //showing only the first error.
+        });
+        errorsHtml += '</ul></div>';
+                   msg = errorsHtml;
+                       
+                       
+                    }
+                    $('#result3').html(msg);
+                }
+                    
+             })
+
+            .done( function(response){
+                if (response.error == false){
+        //No errors, check user
+        $('#result3').html(response.error);
+                }else{
+                    console.log(response);
+                  // There is an error
+                }
+                /*$('#result1').html(response);
+                $('#applyModal').modal('hide');*/
+                 
+            });
+        //alert("thank god111");
+});
+
 

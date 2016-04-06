@@ -16,6 +16,9 @@
     </div>
    
 @endif
-@if(Session::has('flash_message'))
-    <div class="alert alert-success"><span class="glyphicon glyphicon-ok"></span><em> {!! session('flash_message') !!}</em></div>
+@if(Session::has('success'))
+    <div class="alert alert-success">
+        <strong>Congrats!!</strong>
+         {!! session('message') !!}
+    </div>
 @endif

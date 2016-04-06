@@ -10,16 +10,27 @@ use App\Http\Requests;
 class SubscriptionController extends Controller
 {
     function postSubscription (Request $request){
-    	$this->validate($request, [
+    	if ($this->validate($request, [
 			'email' => 'required|email|unique:subscriptions'
 			
-			]);
+			]))
+            {
+                 return response()->json($validator->messages(), 406);
+            }
     	$email=$request->email;
     	$task = new Subscription();
     	$task->email=$email;
-    	$task->save();
-    	//return redirect('/');
-    	\Session::flash('flash_message','You are successfully subscribed.');
-        return redirect()->route('welcome');
+    	if($task->save())
+        {
+             return response()->json(['success' => 'Congrats!! You are Subscribed'], 200);
+        } 
+        else
+        {
+                return response()->json(['error' => 'Sorry!! You could not be subscribed'], 400);
+            
+        }
+    	
 	}
+
+   
 }

@@ -29,12 +29,31 @@
              </address>
       
     </div>
-    <div class="col-md-9 column-9">
+    <div class="col-md-9 column-15">
     @if(Session::has('success'))
-<p class="alert alert-info">{{ Session::get('success') }}</p>
-@endif
-      <h3>Dashboard</h3>
+        <p class="alert alert-info">{{ Session::get('success') }}</p>
+    @endif
+      <h6>Dashboard</h6>
        <p class="m_4"></p>
+                <div class="panel-body_3">
+                  
+                  <div class="panel-body_1">
+                    <h3>
+                      <a href="{{ route('postquotes')}}" style="text-transform: capitalize;">Your Quotes</a>
+                    </h3>
+                      These are the quotes that you can post.
+                  </div>
+                  <div class="clearfix"></div><hr>
+                    
+                  <div class="panel-body_1">
+                    <h3>
+                      <a href="index_detail.html" style="text-transform: capitalize;">Post Classifieds</a>
+                    </h3>
+                      You can post free classifieds based on categories.
+                  </div>
+                 
+                   <div class="clearfix"></div>
+               </div>
          
     </div>    
     <div class="clearfix"> </div>

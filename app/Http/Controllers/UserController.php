@@ -2,7 +2,7 @@
 namespace App\Http\Controllers;
 
 use App\User;
-
+use App\Quote;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
@@ -151,4 +151,56 @@ class UserController extends Controller
 		return redirect()->route('welcome');
 
 	}
+	//view user Quotes
+	public function getQuotes($author=null)
+	{
+		if(isset($author))
+		{
+
+			$quotes=Quote::where('user_id',Auth::user()->id)->where('author',$author)->get();
+		}
+		else
+		{
+			$quotes=Quote::where('user_id',Auth::user()->id)->get();
+		}
+		
+		return view('/user/postquotes', ['quotes' => $quotes]);
+	}
+	//post a Quote
+	 public function postQuote(Request $request){
+    	$this->validate($request, [
+    		'quote' => 'required|max:500',
+        	'author' => 'required|max:60'
+        	
+			]);
+    	
+    		
+			    $quote = new Quote();
+			    $quote->quote = $request['quote'];
+			    $quote->author=$request['author'];
+			    $user=Auth::user();
+			    $user->quote()->save($quote);
+		        return Redirect::route('postquotes')->with('success', true)->with('message','Quote added.');
+		        
+			
+	
+    }
+    //delete a Quote
+	 public function deleteUserQuote($quote_id){
+    	
+    	         
+    			$quotes=Quote::where('user_id',Auth::user()->id)->where('id',$quote_id)->get();
+			     
+			     if (!is_null($quote)){
+			     	
+			    $quote->delete();
+		        return Redirect::route('postquotes')->with('deletesuccess', true)->with('message','Quote deleted.');
+		        } else
+		        {
+		        	
+		        	return Redirect::route('postquotes')->with('deleteerror', true)->with('message','Quote could not be deleted');
+		        }
+			
+	
+    }
 }
